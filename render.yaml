@@ -1,0 +1,69 @@
+# Giftunity Project - Render Blueprint Configuration
+# Professional microservices deployment with Environment Groups
+# Region: Frankfurt (EU Central) - Cost Optimized
+
+# Database Service Definition
+databases:
+  - name: Giftunity-db
+    region: frankfurt
+    plan: free
+    postgresMajorVersion: 15
+
+# Web and Static Service Definitions
+services:
+  # Backend API Service
+  - type: web
+    name: Giftunity-backend
+    region: frankfurt
+    plan: free
+    buildCommand: npm install --production
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: Giftunity-db
+          property: connectionString
+      - key: FRONTEND_URL
+        fromService:
+          name: Giftunity-frontend
+          property: url
+
+  # Telegram Bot Service
+  - type: web
+    name: Giftunity-bot
+    region: frankfurt
+    plan: free
+    buildCommand: npm install --production
+    startCommand: node src/bot.js
+    healthCheckPath: /health
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: url
+      - key: WEBHOOK_URL
+        fromService:
+          name: Giftunity-bot
+          property: url
+
+  # Frontend Web Application
+  - type: static
+    name: Giftunity-frontend
+    region: frankfurt
+    plan: free
+    buildCommand: echo "No build required for placeholder."
+    staticPublishPath: ./build
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: url
