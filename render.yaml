@@ -14,6 +14,7 @@ services:
   # Backend API Service
   - type: web
     name: Giftunity-backend
+    runtime: node
     region: frankfurt
     plan: free
     buildCommand: npm install --production
@@ -36,6 +37,7 @@ services:
   # Telegram Bot Service
   - type: web
     name: Giftunity-bot
+    runtime: node
     region: frankfurt
     plan: free
     buildCommand: npm install --production
@@ -66,4 +68,5 @@ services:
       - key: REACT_APP_BACKEND_URL
         fromService:
           name: Giftunity-backend
-          property: url
+          type: web
+          property: host
