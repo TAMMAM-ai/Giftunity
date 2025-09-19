@@ -17,8 +17,8 @@ services:
     runtime: node
     region: frankfurt
     plan: free
-    buildCommand: npm install --production
-    startCommand: node src/server.js
+    buildCommand: cd Giftunity-backend && npm install --production
+    startCommand: cd Giftunity-backend && node src/server.js
     healthCheckPath: /health
     envVars:
       - fromGroup: giftunity-secrets
@@ -40,8 +40,8 @@ services:
     runtime: node
     region: frankfurt
     plan: free
-    buildCommand: npm install --production
-    startCommand: node src/bot.js
+    buildCommand: cd Giftunity-bot && npm install --production
+    startCommand: cd Giftunity-bot && node src/bot.js
     healthCheckPath: /health
     envVars:
       - fromGroup: giftunity-secrets
