@@ -61,7 +61,7 @@ services:
     name: Giftunity-frontend
     runtime: static
     buildCommand: echo "No build required for placeholder."
-    staticPublishPath: ./build
+    staticPublishPath: ./Giftunity-frontend/static
     envVars:
       - fromGroup: giftunity-secrets
       - key: REACT_APP_BACKEND_URL
