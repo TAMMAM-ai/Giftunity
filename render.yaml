@@ -60,7 +60,6 @@ services:
   - type: web
     name: Giftunity-frontend
     runtime: static
-    plan: free
     buildCommand: echo "No build required for placeholder."
     staticPublishPath: ./build
     envVars:
