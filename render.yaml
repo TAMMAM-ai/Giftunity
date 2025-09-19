@@ -19,9 +19,8 @@ services:
     buildCommand: npm install --production
     startCommand: node src/server.js
     healthCheckPath: /health
-    envVarGroups:
-      - giftunity-secrets
     envVars:
+      - fromGroup: giftunity-secrets
       - key: PORT
         value: 10000
       - key: DATABASE_URL
@@ -41,9 +40,8 @@ services:
     buildCommand: npm install --production
     startCommand: node src/bot.js
     healthCheckPath: /health
-    envVarGroups:
-      - giftunity-secrets
     envVars:
+      - fromGroup: giftunity-secrets
       - key: BACKEND_URL
         fromService:
           name: Giftunity-backend
@@ -60,10 +58,9 @@ services:
     region: frankfurt
     plan: free
     buildCommand: echo "No build required for placeholder."
-    publishPath: ./build
-    envVarGroups:
-      - giftunity-secrets
+    staticPublishPath: ./build
     envVars:
+      - fromGroup: giftunity-secrets
       - key: REACT_APP_BACKEND_URL
         fromService:
           name: Giftunity-backend
