@@ -24,6 +24,40 @@ const fs = require('fs');
 const path = require('path');
 const db = require('./config/db');
 
+// Database initialization function
+const initializeDatabase = async () => {
+  try {
+    console.log('🔧 Initializing database...');
+    
+    // Check if users table exists
+    const tableCheck = await db.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'users'
+      );
+    `);
+    
+    if (!tableCheck.rows[0].exists) {
+      console.log('📋 Creating users table...');
+      
+      // Read and execute the migration
+      const migrationPath = path.join(__dirname, '..', '..', '..', 'Giftunity-db', 'migrations', '0001_create_users_table.sql');
+      const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+      
+      await db.query(migrationSQL);
+      console.log('✅ Users table created successfully');
+    } else {
+      console.log('✅ Users table already exists');
+    }
+    
+    console.log('🎉 Database initialization completed');
+  } catch (error) {
+    console.error('❌ Database initialization failed:', error);
+    // Don't exit the process, let the server start and handle errors gracefully
+  }
+};
+
 // Initialize Express application
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -291,11 +325,25 @@ process.on('SIGINT', () => {
 /**
  * Start Server
  */
-app.listen(PORT, () => {
-  console.log(`🚀 Giftunity Backend API Server is running on port ${PORT}`);
-  console.log(`📊 Health check available at: http://localhost:${PORT}/health`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🗄️ Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
-});
+const startServer = async () => {
+  try {
+    // Initialize database first
+    await initializeDatabase();
+    
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`🚀 Giftunity Backend API Server is running on port ${PORT}`);
+      console.log(`📊 Health check available at: http://localhost:${PORT}/health`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🗄️ Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+// Start the server
+startServer();
 
 module.exports = app;

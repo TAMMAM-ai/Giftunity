@@ -137,7 +137,16 @@ const handleBotError = async (ctx, error, operation = 'operation') => {
     await ctx.reply(errorMessage);
   } catch (translationError) {
     // Fallback error message if translation service is down
-    await ctx.reply('An error occurred. Please try again later.');
+    const fallbackMessage = `
+🤖 <b>Giftunity Bot</b>
+
+Sorry, I'm experiencing some technical difficulties right now. 
+
+Please try again in a few moments, or contact support if the problem persists.
+
+Thank you for your patience! 🙏
+    `;
+    await ctx.reply(fallbackMessage, { parse_mode: 'HTML' });
   }
 };
 
@@ -169,7 +178,27 @@ bot.start(async (ctx) => {
     console.log(`Welcome message sent to user ${user.id} in language ${preferredLanguage}`);
     
   } catch (error) {
-    await handleBotError(ctx, error, '/start command');
+    // If backend is not available, send a basic welcome message
+    if (error.code === 'ERR_BAD_RESPONSE' || error.status === 500) {
+      const fallbackWelcome = `
+🤖 <b>Welcome to Giftunity!</b>
+
+Hello ${ctx.from.first_name}! 👋
+
+I'm your Giftunity assistant, here to help you manage gifts and share joy with others.
+
+While I'm setting up some features, you can:
+• Use /help to see available commands
+• Use /language to change your language preference
+
+Thank you for joining Giftunity! 🎁
+      `;
+      
+      await ctx.reply(fallbackWelcome, { parse_mode: 'HTML' });
+      console.log(`Fallback welcome message sent to user ${ctx.from.id}`);
+    } else {
+      await handleBotError(ctx, error, '/start command');
+    }
   }
 });
 
