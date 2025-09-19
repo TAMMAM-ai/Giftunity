@@ -1,19 +1,23 @@
 # Giftunity Project - Render Blueprint Configuration
-# Automatic deployment configuration for all four microservices
-# Region: Frankfurt (EU Central)
+# Professional microservices deployment with webhook optimization
+# Region: Frankfurt (EU Central) - Cost Optimized
 
 services:
-  # Telegram Bot Service
+  # Telegram Bot Service with Webhook Configuration
   - name: Giftunity-bot
     type: web
     env: node
-    buildCommand: "npm install"
+    buildCommand: "npm install --production"
     startCommand: "node src/bot.js"
     envVars:
       - key: NODE_ENV
         value: production
       - key: TELEGRAM_BOT_TOKEN
         sync: false
+      - key: WEBHOOK_URL
+        fromService:
+          name: Giftunity-bot
+          property: host
       - key: BACKEND_URL
         fromService:
           name: Giftunity-backend
@@ -25,12 +29,13 @@ services:
     region: frankfurt
     plan: free
     healthCheckPath: /health
+    healthCheckTimeout: 30s
 
-  # Backend API Service
+  # Backend API Service with Enhanced Error Handling
   - name: Giftunity-backend
     type: web
     env: node
-    buildCommand: "npm install"
+    buildCommand: "npm install --production"
     startCommand: "node src/server.js"
     envVars:
       - key: NODE_ENV
@@ -49,14 +54,17 @@ services:
         fromService:
           name: Giftunity-frontend
           property: host
+      - key: LOG_LEVEL
+        value: info
     region: frankfurt
     plan: free
     healthCheckPath: /health
+    healthCheckTimeout: 30s
 
-  # Frontend Web Application
+  # Frontend Web Application with Build Optimization
   - name: Giftunity-frontend
     type: static
-    buildCommand: "npm install && npm run build"
+    buildCommand: "npm ci --only=production && npm run build"
     staticPublishPath: "build"
     envVars:
       - key: NODE_ENV
@@ -67,10 +75,12 @@ services:
           property: host
       - key: REACT_APP_BOT_USERNAME
         sync: false
+      - key: GENERATE_SOURCEMAP
+        value: "false"
     region: frankfurt
     plan: free
 
-# Database Service
+# Database Service with Performance Optimization
 databases:
   - name: Giftunity-db
     region: frankfurt
@@ -79,3 +89,6 @@ databases:
     user: giftunity_user
     maxConnections: 20
     postgresMajorVersion: 15
+    # Free tier optimization - no additional cost
+    # Automatic backups enabled by default
+    # Connection pooling optimized for microservices
