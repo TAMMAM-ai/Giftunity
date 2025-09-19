@@ -47,6 +47,14 @@
 - Implement proper input validation and sanitization
 - Follow OWASP security guidelines
 
+### 6.1. Environment Variable Management (CRITICAL)
+- **PRIMARY RULE**: ALWAYS use the existing Environment Group `giftunity-secrets` for ALL environment variables
+- **NEVER** suggest adding individual environment variables to individual services
+- **NEVER** suggest creating separate environment variable configurations per service
+- **ALWAYS** direct users to add/modify variables in the Environment Group only
+- **VERIFY** that all services are properly linked to the Environment Group before suggesting any environment variable changes
+- **REMEMBER**: The project uses a centralized Environment Group approach - this is the single source of truth for all environment variables
+
 ## Date and Time Configuration
 
 ### 7. Timezone and Date Handling
@@ -129,6 +137,14 @@ const formatDate = (date) => {
 - **Production**: Render production environment
 - **Environment Variables**: Use Render's secure environment management
 
+### 15.1. Render Environment Variable Strategy (MANDATORY)
+- **Environment Group**: `giftunity-secrets` is the ONLY source for environment variables
+- **Service Configuration**: All services (bot, backend, frontend) MUST reference the Environment Group
+- **Variable Management**: NEVER suggest individual service-level environment variables
+- **Troubleshooting**: When environment variable issues arise, ALWAYS check the Environment Group first
+- **New Variables**: ALWAYS add new variables to the Environment Group, never to individual services
+- **Verification**: Before suggesting any environment variable changes, confirm the Environment Group contains the required variables
+
 ### 16. Build and Deployment
 - **Build Command**: `npm install && npm run build`
 - **Start Command**: `npm start`
@@ -176,6 +192,14 @@ const formatDate = (date) => {
 - Provide multiple solution approaches when appropriate
 - Explain the reasoning behind code decisions
 
+### 22.1. Environment Variable Problem Resolution (CRITICAL)
+- **FIRST STEP**: Always check if the required environment variable exists in the Environment Group `giftunity-secrets`
+- **SECOND STEP**: If missing, instruct user to add it to the Environment Group ONLY
+- **NEVER SUGGEST**: Individual service-level environment variable configuration
+- **ALWAYS REMIND**: The project uses centralized Environment Group management
+- **VERIFICATION**: Confirm the Environment Group contains all necessary variables before proceeding with any solution
+- **TROUBLESHOOTING**: When debugging environment variable issues, always reference the Environment Group as the source of truth
+
 ## Quality Assurance
 
 ### 23. Code Review Checklist
@@ -188,7 +212,9 @@ const formatDate = (date) => {
 - [ ] Tests are written and passing
 
 ### 24. Deployment Checklist
-- [ ] All environment variables are configured
+- [ ] All environment variables are configured in Environment Group `giftunity-secrets`
+- [ ] NO individual service-level environment variables are configured
+- [ ] All services are properly linked to the Environment Group
 - [ ] Database migrations are applied
 - [ ] Build process completes successfully
 - [ ] Health checks are implemented
@@ -211,7 +237,7 @@ const formatDate = (date) => {
 
 ---
 
-**Last Updated**: 2025-09-19 17:17:46 (W. Europe Standard Time)  
-**Version**: 1.0  
+**Last Updated**: 2025-09-19 17:25:00 (W. Europe Standard Time)  
+**Version**: 1.1  
 **Maintained By**: Development Team  
 **Next Review**: 2025-10-19

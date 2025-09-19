@@ -105,8 +105,24 @@ class BackendAPI {
   }
 }
 
-// Initialize backend API client
-const backendAPI = new BackendAPI(process.env.BACKEND_URL);
+// Initialize backend API client with proper URL formatting
+const getBackendURL = () => {
+  let backendURL = process.env.BACKEND_URL;
+  
+  // Ensure the backend URL has proper protocol
+  if (backendURL && !backendURL.startsWith('http')) {
+    backendURL = `https://${backendURL}`;
+  }
+  
+  // Ensure the URL has the proper .onrender.com domain
+  if (backendURL && !backendURL.includes('.onrender.com')) {
+    backendURL = `${backendURL}.onrender.com`;
+  }
+  
+  return backendURL;
+};
+
+const backendAPI = new BackendAPI(getBackendURL());
 
 /**
  * Error Handler for Bot Operations
@@ -260,10 +276,19 @@ bot.catch((err, ctx) => {
  */
 if (process.env.NODE_ENV === 'production') {
   // Set webhook for production deployment
-  // Ensure the webhook URL has the proper protocol
-  const baseURL = process.env.WEBHOOK_URL.startsWith('http') 
-    ? process.env.WEBHOOK_URL 
-    : `https://${process.env.WEBHOOK_URL}`;
+  // Ensure the webhook URL has the proper protocol and domain
+  let baseURL = process.env.WEBHOOK_URL;
+  
+  // Fix common webhook URL issues
+  if (!baseURL.startsWith('http')) {
+    baseURL = `https://${baseURL}`;
+  }
+  
+  // Ensure the URL has the proper .onrender.com domain
+  if (!baseURL.includes('.onrender.com')) {
+    baseURL = `${baseURL}.onrender.com`;
+  }
+  
   const webhookURL = `${baseURL}/bot${process.env.TELEGRAM_BOT_TOKEN}`;
   
   // Configure webhook
@@ -308,7 +333,7 @@ app.listen(PORT, () => {
   console.log(`🌐 Bot web server running on port ${PORT}`);
   console.log(`📊 Health check available at: http://localhost:${PORT}/health`);
   console.log(`🤖 Bot token configured: ${process.env.TELEGRAM_BOT_TOKEN ? 'Yes' : 'No'}`);
-  console.log(`🔗 Backend URL: ${process.env.BACKEND_URL || 'Not configured'}`);
+  console.log(`🔗 Backend URL: ${getBackendURL() || 'Not configured'}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
