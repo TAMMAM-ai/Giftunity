@@ -24,6 +24,9 @@ const { Telegraf } = require('telegraf');
 const axios = require('axios');
 const express = require('express');
 
+// Load environment variables
+require('dotenv').config();
+
 // Initialize Express app for webhook and health checks
 const app = express();
 const PORT = process.env.PORT || 10001;
@@ -257,7 +260,11 @@ bot.catch((err, ctx) => {
  */
 if (process.env.NODE_ENV === 'production') {
   // Set webhook for production deployment
-  const webhookURL = `${process.env.WEBHOOK_URL}/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+  // Ensure the webhook URL has the proper protocol
+  const baseURL = process.env.WEBHOOK_URL.startsWith('http') 
+    ? process.env.WEBHOOK_URL 
+    : `https://${process.env.WEBHOOK_URL}`;
+  const webhookURL = `${baseURL}/bot${process.env.TELEGRAM_BOT_TOKEN}`;
   
   // Configure webhook
   bot.telegram.setWebhook(webhookURL).then(() => {
