@@ -1,0 +1,217 @@
+# Giftunity Project - Cursor AI Rules
+# Professional Development Standards and Guidelines
+
+## Project Overview
+- **Project Name**: Giftunity
+- **Language**: English (All code, comments, documentation, and user-facing text)
+- **Platform**: Render (Deployment and Monitoring)
+- **IDE**: Cursor AI
+- **Version Control**: GitHub
+
+## Core Development Principles
+
+### 1. Code Quality Standards
+- Follow Clean Code principles (DRY, KISS, YAGNI)
+- Write self-documenting code with clear variable and function names
+- Implement comprehensive error handling in all functions
+- Use TypeScript for type safety when applicable
+- Maintain consistent code formatting and indentation
+
+### 2. Architecture Guidelines
+- Follow MVC pattern for project structure
+- Implement separation of concerns
+- Use dependency injection where appropriate
+- Maintain modular and reusable code components
+
+### 3. Naming Conventions
+- **Variables and Functions**: camelCase (e.g., `getUserData`, `isValidUser`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `API_BASE_URL`, `MAX_RETRY_ATTEMPTS`)
+- **Classes and Components**: PascalCase (e.g., `UserService`, `PaymentComponent`)
+- **Files and Directories**: kebab-case (e.g., `user-service.js`, `payment-component/`)
+
+### 4. Language and Localization
+- **Default Language**: English for all code, comments, and documentation
+- **User Interface**: Use translation keys for all user-facing text
+- **Translation Files**: Store in `locales/` directory (en.json, ar.json, fa.json, etc.)
+- **Comments**: Write in English with clear, concise explanations
+
+### 5. Error Handling
+- Implement try-catch blocks for all async operations
+- Provide meaningful error messages using translation keys
+- Log errors appropriately for debugging
+- Handle edge cases and validation errors gracefully
+
+### 6. Security Best Practices
+- Never hardcode sensitive information (API keys, passwords)
+- Use environment variables for configuration
+- Implement proper input validation and sanitization
+- Follow OWASP security guidelines
+
+## Date and Time Configuration
+
+### 7. Timezone and Date Handling
+- **System Timezone**: W. Europe Standard Time (UTC+01:00)
+- **Current System Time**: 2025-09-19 17:15:34
+- **Date Format**: ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ)
+- **Timezone Handling**: Always use UTC for storage, convert to local time for display
+
+### 8. Date/Time Implementation Rules
+```javascript
+// Always use UTC for database storage
+const utcDate = new Date().toISOString();
+
+// Convert to local time for display
+const localDate = new Date(utcDate).toLocaleString('en-US', {
+  timeZone: 'Europe/Berlin',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+});
+
+// Use consistent date formatting
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+};
+```
+
+### 9. Timezone Configuration
+- **Default Timezone**: Europe/Berlin (UTC+01:00)
+- **Daylight Saving**: Automatically handled by system
+- **Date Libraries**: Use native JavaScript Date object or moment.js for complex operations
+- **Server Time**: Ensure server timezone matches application timezone
+
+## Development Workflow
+
+### 10. Git and Version Control
+- **Branch Naming**: feature/description, bugfix/description, hotfix/description
+- **Commit Messages**: Use conventional commits format
+- **Pull Requests**: Include detailed descriptions and testing notes
+- **Code Review**: All code must be reviewed before merging
+
+### 11. Testing Standards
+- Write unit tests for all business logic
+- Implement integration tests for API endpoints
+- Use descriptive test names and assertions
+- Maintain minimum 80% code coverage
+
+### 12. Documentation Requirements
+- Document all public APIs and functions
+- Maintain up-to-date README files
+- Include inline comments for complex logic
+- Update documentation with every code change
+
+## Performance and Optimization
+
+### 13. Performance Guidelines
+- Optimize database queries and avoid N+1 problems
+- Implement proper caching strategies
+- Use lazy loading for large datasets
+- Minimize bundle size and optimize assets
+
+### 14. Memory Management
+- Avoid memory leaks in event listeners
+- Properly dispose of resources
+- Use weak references where appropriate
+- Monitor memory usage in production
+
+## Deployment and Environment
+
+### 15. Environment Configuration
+- **Development**: Local development with hot reload
+- **Staging**: Render preview deployments
+- **Production**: Render production environment
+- **Environment Variables**: Use Render's secure environment management
+
+### 16. Build and Deployment
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npm start`
+- **Node Version**: 18.x LTS
+- **Port**: 10000 (Render default)
+
+## Code Style and Formatting
+
+### 17. JavaScript/TypeScript
+- Use semicolons consistently
+- Prefer const over let, avoid var
+- Use template literals for string concatenation
+- Implement proper destructuring and spread operators
+
+### 18. CSS/Styling
+- Use CSS modules or styled-components
+- Follow BEM methodology for class naming
+- Implement responsive design principles
+- Use CSS custom properties for theming
+
+### 19. HTML Structure
+- Use semantic HTML elements
+- Implement proper accessibility attributes
+- Follow ARIA guidelines for screen readers
+- Ensure proper heading hierarchy
+
+## AI Assistant Guidelines
+
+### 20. Cursor AI Behavior
+- Always follow these rules when generating code
+- Provide complete, production-ready solutions
+- Include proper error handling and validation
+- Use translation keys for all user-facing text
+- Maintain consistent code style and formatting
+
+### 21. Code Generation Standards
+- Generate clean, readable, and maintainable code
+- Include comprehensive comments and documentation
+- Implement proper TypeScript types when applicable
+- Follow the established project patterns and conventions
+
+### 22. Problem Solving Approach
+- Analyze requirements thoroughly before coding
+- Consider edge cases and error scenarios
+- Provide multiple solution approaches when appropriate
+- Explain the reasoning behind code decisions
+
+## Quality Assurance
+
+### 23. Code Review Checklist
+- [ ] Code follows naming conventions
+- [ ] Error handling is implemented
+- [ ] Translation keys are used for user text
+- [ ] Performance considerations are addressed
+- [ ] Security best practices are followed
+- [ ] Documentation is updated
+- [ ] Tests are written and passing
+
+### 24. Deployment Checklist
+- [ ] All environment variables are configured
+- [ ] Database migrations are applied
+- [ ] Build process completes successfully
+- [ ] Health checks are implemented
+- [ ] Monitoring is configured
+- [ ] Error tracking is enabled
+
+## Maintenance and Updates
+
+### 25. Regular Maintenance
+- Keep dependencies updated regularly
+- Monitor performance metrics
+- Review and update security measures
+- Maintain comprehensive logging
+
+### 26. Documentation Updates
+- Update this file when project standards change
+- Keep README files current
+- Maintain API documentation
+- Update deployment guides as needed
+
+---
+
+**Last Updated**: 2025-09-19 17:17:46 (W. Europe Standard Time)  
+**Version**: 1.0  
+**Maintained By**: Development Team  
+**Next Review**: 2025-10-19

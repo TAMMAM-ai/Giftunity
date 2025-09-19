@@ -1,0 +1,37 @@
+---
+description: Language standards and translation system requirements for Giftunity project
+globs: ["**/*.py", "**/locales/**", "**/*.json"]
+alwaysApply: true
+---
+
+# LANGUAGE AND TRANSLATION STANDARDS
+
+## Language Standards
+
+**DO**: Use English exclusively for all project files, code, documentation, comments, variable names, function names, class names, string literals, user-facing text, commit messages, pull request descriptions, configuration files, deployment scripts, developer notes, file contents, GitHub comments, inline comments, and all textual content within files.
+
+## Translation Keys
+
+**DO**: Use translation keys for all strings that interact with users, admins, or any human-readable content. Store translated texts in translation files according to supported languages. Use language keys instead of hardcoded strings for all user-facing messages, admin interfaces, platform interactions, and any text displayed to humans through applications.
+
+## Translation Key Synchronization
+
+**DO**: Immediately add new translation keys to ALL language files (en.json, ar.json, fa.json, de.json, ru.json, zh.json) before completing any task. Never postpone or delay translation key updates. Every new key must be added to all supported languages in the same commit or pull request. Consider work incomplete and unacceptable if translation keys are missing from any language file.
+
+## Internationalization
+
+**DO**: Maintain comprehensive multi-language support with organized JSON translation files for each supported language. Use hierarchical key naming convention with descriptive prefixes (e.g., nav.*, dashboard.*, onboarding.*). Support RTL languages with proper text direction handling. Include variable placeholders for dynamic content and ensure all user-facing strings use translation keys instead of hardcoded text.
+
+## User Experience and Interface
+
+**DO**: Implement smart button interface with dynamic visibility based on user context and permissions. Use contextual safety points for all operations with appropriate warning messages. Maintain English-default translation system with comprehensive multilingual support including RTL languages (Arabic, Persian). Design mobile-first responsive interface with concise text and logical button layouts. Implement progressive user experience with smooth transitions between interfaces. Use single active interface per user with automatic cleanup and timeout management without adding resource overhead or unnecessary complexity.
+
+# DO NOT Rules
+
+## Hardcoded Text
+
+**DO NOT**: Use hardcoded strings for user-facing content, admin interactions, platform communications, or any text that humans will read. Hardcoded text is only permitted for terminal logs, debugging information, programmer-to-programmer communications, internal system messages, and non-human-interactive content.
+
+## Translation Key Neglect
+
+**DO NOT**: Complete any task, commit, or pull request with missing translation keys. Never postpone translation key updates to later commits or separate pull requests. Never deliver work reports or consider tasks complete if translation keys are missing from any language file. Never create partial language support or incomplete translations that break the multi-language system.
