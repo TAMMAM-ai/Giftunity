@@ -1,35 +1,49 @@
 # Giftunity Project
 
-A professional gift management platform built with modern web technologies.
+Professional gift management platform with microservices architecture.
 
-## Project Overview
+## Services
 
-- **Platform**: Render (Deployment and Monitoring)
-- **Development**: Cursor AI IDE
-- **Version Control**: GitHub
-- **Language**: English
+### 🤖 Giftunity-bot
+Telegram bot service for user interactions and platform communication.
+
+### 🔧 Giftunity-backend
+Core API service handling business logic and data processing.
+
+### 🌐 Giftunity-frontend
+User interface service providing responsive web application.
+
+### 🗄️ Giftunity-db
+Database management service for data storage and integrity.
+
+## Architecture
+
+- **Microservices**: Independent, scalable services
+- **API-First**: RESTful communication
+- **Database**: PostgreSQL with migrations
+- **Deployment**: Render platform
+- **Region**: Frankfurt (EU Central)
+
+## Quick Start
+
+1. **Clone repository**
+2. **Deploy to Render** using `render.yaml`
+3. **Configure environment variables**
+4. **Services auto-deploy**
 
 ## Features
 
-- Professional gift management system
-- Multi-language support
-- Modern responsive design
-- Secure authentication
-- Real-time notifications
+- ✅ **Multi-language support**
+- ✅ **Real-time communication**
+- ✅ **Secure authentication**
+- ✅ **Health monitoring**
+- ✅ **Auto-scaling**
+- ✅ **Zero additional cost**
 
-## Getting Started
+## Deployment
 
-1. Clone the repository
-2. Install dependencies
-3. Configure environment variables
-4. Run the development server
+All services are configured for automatic deployment on Render platform with Frankfurt region optimization.
 
 ## Documentation
 
-See the `docs/` directory for detailed documentation including:
-- Render platform integration guide
-- Development standards and guidelines
-
-## License
-
-This project is licensed under the MIT License.
+Each service directory contains detailed README with specific configuration and deployment instructions.
