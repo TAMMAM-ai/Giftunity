@@ -21,7 +21,6 @@ databases:
     region: frankfurt
     plan: free
     postgresMajorVersion: 15
-    ipAllowList: [] # Required for free instances
 
 # Web and Static Service Definitions
 services:
