@@ -14,7 +14,6 @@ services:
   # Backend API Service
   - name: Giftunity-backend
     type: web
-    env: node
     region: frankfurt
     plan: free
     buildCommand: "npm install --production"
@@ -33,7 +32,6 @@ services:
   # Telegram Bot Service
   - name: Giftunity-bot
     type: web
-    env: node
     region: frankfurt
     plan: free
     buildCommand: "npm install --production"
