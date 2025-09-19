@@ -1,0 +1,81 @@
+# Giftunity Project - Render Blueprint Configuration
+# Automatic deployment configuration for all four microservices
+# Region: Frankfurt (EU Central)
+
+services:
+  # Telegram Bot Service
+  - name: Giftunity-bot
+    type: web
+    env: node
+    buildCommand: "npm install"
+    startCommand: "node src/bot.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: host
+      - key: DATABASE_URL
+        fromService:
+          name: Giftunity-db
+          property: connectionString
+    region: frankfurt
+    plan: free
+    healthCheckPath: /health
+
+  # Backend API Service
+  - name: Giftunity-backend
+    type: web
+    env: node
+    buildCommand: "npm install"
+    startCommand: "node src/server.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromService:
+          name: Giftunity-db
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        fromService:
+          name: Giftunity-frontend
+          property: host
+    region: frankfurt
+    plan: free
+    healthCheckPath: /health
+
+  # Frontend Web Application
+  - name: Giftunity-frontend
+    type: static
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "build"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: host
+      - key: REACT_APP_BOT_USERNAME
+        sync: false
+    region: frankfurt
+    plan: free
+
+# Database Service
+databases:
+  - name: Giftunity-db
+    region: frankfurt
+    plan: free
+    databaseName: giftunity
+    user: giftunity_user
+    maxConnections: 20
+    postgresMajorVersion: 15
