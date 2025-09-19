@@ -358,6 +358,125 @@ The Giftunity project is professionally structured with a complete microservices
 
 All services are configured for automatic deployment, monitoring, and scaling, ensuring a robust and efficient gift management platform that can handle real-world usage while maintaining cost-effectiveness through free tier optimization.
 
+## Cursor Application Settings
+
+### Current Cursor IDE Configuration
+
+The project is developed using Cursor AI IDE with comprehensive settings and configurations optimized for professional development.
+
+#### General Settings
+- **Import VS Code Settings**: Enabled to maintain consistency with Visual Studio Code development environment
+- **Rules for AI**: Custom rules defined to guide AI behavior within the editor for optimal code generation
+- **Editor Settings**: Customized appearance and behavior according to professional development standards
+- **Privacy Settings**: Configured to manage data sharing and privacy preferences appropriately
+
+#### Integration Settings
+- **Submenu for Document Button**: Activated structured submenu for organized document editing in toolbar
+- **Use of Document Variables**: Enabled creation of document variables with selected field content for text processing and VBA macros
+- **Stylesheet Directory for Word and Excel**: Defined directory for stylesheet files ensuring consistent formatting across Word and Excel documents
+- **Format of Control File for Serial Letter**: Specified CSV format for control files used in serial letters
+- **Separator of CSV Data Source File**: Set to comma separator for CSV data source files in serial letters
+- **Default Setting for Linking Variant for Files**: Determined default method for linking application files with dependent data upon import
+- **Name of the Menu Item for Excel Export**: Customized menu item name for Excel export in Reports menu
+- **Maximum Number of Datasets to Be Exported at Business Trip Export**: Set maximum datasets limit for business trip exports
+- **Windows-Specific Access to Open Documents**: Configured document opening with associated applications in Windows
+- **Windows-Specific Access Can Be Set Per User**: Enabled individual user preferences for Windows-specific document access
+- **Generate Documents by Application Server**: Configured single-letter templates generation on application server for performance optimization
+- **Record Table Exports**: Enabled logging of table data exports for comprehensive auditing purposes
+- **Call Web Services Directly in the Client**: Activated server-side web service calls for optimal performance
+- **Activate MS Teams Integration**: Integrated MS Teams as telephone system enabling direct calls and chats from application
+
+#### User Preferences
+- **Excel Export Directory**: Specified dedicated folder for Excel format report storage
+- **Storage Time for Temporary Documents (Unit: Days)**: Set duration for retaining temporary documents before automatic deletion
+- **Dialog for Returning Documents After Closing Window**: Configured dialog prompting users to return borrowed documents upon closing main windows
+- **Obligation for Returning Documents Before Closing Application**: Determined requirement for users to return or discard borrowed documents before application exit
+- **Use Entity Name for Excel Export**: Decided to include entity name in column titles during Excel exports for clarity
+- **Optimize Options in Word**: Temporarily deactivated Word's grammar check during document creation to enhance performance
+- **Open Serial Letter with Native Technique**: Selected native technique method for mixing serial letters instead of CRM interface
+- **Call Web Services Directly in the Client**: Specified web service calls processing on client or application server
+- **Import of Documents**: Allowed users to decide wizard assistance level when importing documents via drag & drop or opening generated Excel documents
+- **Open Document Set After Import**: Configured automatic document set opening after import completion
+
+#### Cursor AI-Specific Settings
+- **AI Code Generation**: Enabled with professional standards compliance
+- **Code Completion**: Activated with context-aware suggestions
+- **Error Detection**: Real-time error detection and correction suggestions
+- **Code Refactoring**: Automated code improvement recommendations
+- **Documentation Generation**: Automatic documentation creation for functions and classes
+- **Test Generation**: AI-powered test case generation
+- **Security Scanning**: Automated security vulnerability detection
+- **Performance Optimization**: Code performance analysis and improvement suggestions
+
+#### Development Environment Configuration
+- **Language Support**: Full support for JavaScript, TypeScript, Python, and other project languages
+- **Framework Integration**: Optimized for Node.js, React, and PostgreSQL development
+- **Version Control Integration**: Seamless Git integration with GitHub
+- **Debugging Tools**: Advanced debugging capabilities for microservices architecture
+- **Extension Management**: Curated extensions for professional development workflow
+- **Theme and Appearance**: Professional dark theme optimized for extended coding sessions
+- **Keyboard Shortcuts**: Customized shortcuts for efficient development workflow
+- **File Management**: Advanced file organization and search capabilities
+
+#### Project-Specific Cursor Rules
+- **Code Quality Standards**: Enforced DRY, KISS, YAGNI principles
+- **Naming Conventions**: Consistent camelCase, PascalCase, kebab-case enforcement
+- **Error Handling**: Mandatory try-catch blocks and comprehensive error management
+- **Security Guidelines**: OWASP compliance and secure coding practices
+- **Documentation Requirements**: Inline comments and comprehensive documentation standards
+- **Testing Standards**: Unit test generation and coverage requirements
+- **Performance Guidelines**: Code optimization and resource management rules
+- **Deployment Configuration**: Render platform optimization settings
+
+#### AI Assistant Configuration
+- **Context Awareness**: Full project context understanding for accurate suggestions
+- **Code Generation**: Production-ready code generation with proper error handling
+- **Refactoring Assistance**: Intelligent code refactoring recommendations
+- **Documentation**: Automatic documentation generation and updates
+- **Testing**: Test case generation and validation
+- **Security**: Security best practices enforcement
+- **Performance**: Performance optimization suggestions
+- **Deployment**: Deployment configuration and optimization
+
+#### Integration Settings
+- **GitHub Integration**: Seamless repository management and pull request workflow
+- **Render Integration**: Direct deployment configuration and monitoring
+- **Database Integration**: PostgreSQL connection and query optimization
+- **API Integration**: RESTful API development and testing
+- **Bot Integration**: Telegram Bot API development and webhook configuration
+- **Frontend Integration**: React component development and optimization
+- **Backend Integration**: Node.js service development and API creation
+
+#### Performance Optimization Settings
+- **Memory Management**: Efficient memory usage and leak prevention
+- **CPU Optimization**: Resource-efficient code generation
+- **Network Optimization**: Optimized API calls and data transfer
+- **Build Optimization**: Fast build processes and dependency management
+- **Deployment Optimization**: Efficient deployment strategies
+- **Monitoring**: Real-time performance monitoring and alerting
+- **Scaling**: Auto-scaling configuration and resource management
+- **Caching**: Intelligent caching strategies implementation
+
+#### Security Configuration
+- **Authentication**: Secure authentication implementation
+- **Authorization**: Role-based access control
+- **Data Encryption**: End-to-end data encryption
+- **API Security**: Secure API endpoint implementation
+- **Database Security**: Encrypted database connections
+- **Environment Variables**: Secure credential management
+- **Input Validation**: Comprehensive input sanitization
+- **Vulnerability Scanning**: Automated security vulnerability detection
+
+#### Monitoring and Analytics
+- **Code Quality Metrics**: Real-time code quality assessment
+- **Performance Metrics**: Application performance monitoring
+- **Error Tracking**: Comprehensive error logging and tracking
+- **User Analytics**: User behavior and interaction analytics
+- **System Health**: Overall system health monitoring
+- **Resource Usage**: CPU, memory, and network usage tracking
+- **Deployment Status**: Service deployment and health status
+- **Security Monitoring**: Security event detection and alerting
+
 ---
 
 **Last Updated**: September 19, 2025  
