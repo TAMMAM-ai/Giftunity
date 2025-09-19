@@ -59,7 +59,7 @@ services:
     region: frankfurt
     plan: free
     buildCommand: echo "No build required for placeholder."
-    staticPublishPath: ./build
+    publishPath: ./build
     envVarGroups:
       - giftunity-secrets
     envVars:
