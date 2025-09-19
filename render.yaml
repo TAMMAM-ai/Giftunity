@@ -30,7 +30,8 @@ services:
       - key: FRONTEND_URL
         fromService:
           name: Giftunity-frontend
-          property: url
+          type: web
+          property: host
 
   # Telegram Bot Service
   - type: web
@@ -45,17 +46,18 @@ services:
       - key: BACKEND_URL
         fromService:
           name: Giftunity-backend
-          property: url
+          type: web
+          property: host
       - key: WEBHOOK_URL
         fromService:
           name: Giftunity-bot
-          property: url
+          type: web
+          property: host
 
   # Frontend Web Application
   - type: web
     name: Giftunity-frontend
     runtime: static
-    region: frankfurt
     plan: free
     buildCommand: echo "No build required for placeholder."
     staticPublishPath: ./build
