@@ -1,0 +1,8 @@
+{
+  "welcome_message": "Willkommen bei Giftunity! Wählen Sie Ihre Sprache.",
+  "language_selected": "Sprache wurde auf Deutsch eingestellt.",
+  "error_generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+  "error_database": "Datenbankverbindungsfehler. Bitte versuchen Sie es erneut.",
+  "error_user_not_found": "Benutzer nicht gefunden.",
+  "error_invalid_language": "Ungültiger Sprachcode bereitgestellt."
+}

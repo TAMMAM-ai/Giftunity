@@ -1,0 +1,22 @@
+{
+  "name": "giftunity-frontend",
+  "version": "1.0.0",
+  "description": "Giftunity Frontend Service - Placeholder for future web interface development",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"No build required for placeholder.\"",
+    "start": "echo \"Frontend service is dormant.\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "giftunity",
+    "frontend",
+    "placeholder",
+    "microservice"
+  ],
+  "author": "Giftunity Development Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

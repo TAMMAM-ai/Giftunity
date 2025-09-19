@@ -1,0 +1,8 @@
+{
+  "welcome_message": "مرحبًا بك في Giftunity! اختر لغتك.",
+  "language_selected": "تم تعيين اللغة إلى العربية.",
+  "error_generic": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا.",
+  "error_database": "خطأ في الاتصال بقاعدة البيانات. يرجى المحاولة مرة أخرى.",
+  "error_user_not_found": "المستخدم غير موجود.",
+  "error_invalid_language": "رمز لغة غير صالح."
+}

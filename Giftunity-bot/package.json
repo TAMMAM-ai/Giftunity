@@ -1,0 +1,31 @@
+{
+  "name": "giftunity-bot",
+  "version": "1.0.0",
+  "description": "Giftunity Telegram Bot Service - Lightweight user interface for Telegram interactions",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "nodemon src/bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "giftunity",
+    "telegram",
+    "bot",
+    "microservice",
+    "telegraf"
+  ],
+  "author": "Giftunity Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "telegraf": "^4.15.6",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

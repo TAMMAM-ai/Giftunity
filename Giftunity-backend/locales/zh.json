@@ -1,0 +1,8 @@
+{
+  "welcome_message": "欢迎来到Giftunity！选择您的语言。",
+  "language_selected": "语言已设置为中文。",
+  "error_generic": "发生错误。请稍后重试。",
+  "error_database": "数据库连接错误。请重试。",
+  "error_user_not_found": "未找到用户。",
+  "error_invalid_language": "提供的语言代码无效。"
+}

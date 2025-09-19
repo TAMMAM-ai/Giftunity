@@ -1,0 +1,8 @@
+{
+  "welcome_message": "Welcome to Giftunity! Choose your language.",
+  "language_selected": "Language has been set to English.",
+  "error_generic": "An error occurred. Please try again later.",
+  "error_database": "Database connection error. Please try again.",
+  "error_user_not_found": "User not found.",
+  "error_invalid_language": "Invalid language code provided."
+}

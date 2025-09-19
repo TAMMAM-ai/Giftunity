@@ -1,94 +1,85 @@
 # Giftunity Project - Render Blueprint Configuration
-# Professional microservices deployment with webhook optimization
+# Professional microservices deployment with Environment Groups
 # Region: Frankfurt (EU Central) - Cost Optimized
 
-services:
-  # Telegram Bot Service with Webhook Configuration
-  - name: Giftunity-bot
-    type: web
-    env: node
-    buildCommand: "npm install --production"
-    startCommand: "node src/bot.js"
+# Environment Groups for Centralized Secret Management
+envVarGroups:
+  - name: giftunity-secrets
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: TELEGRAM_BOT_TOKEN
         sync: false
-      - key: WEBHOOK_URL
-        fromService:
-          name: Giftunity-bot
-          property: host
-      - key: BACKEND_URL
-        fromService:
-          name: Giftunity-backend
-          property: host
-      - key: DATABASE_URL
-        fromService:
-          name: Giftunity-db
-          property: connectionString
-    region: frankfurt
-    plan: free
-    healthCheckPath: /health
-    healthCheckTimeout: 30s
-
-  # Backend API Service with Enhanced Error Handling
-  - name: Giftunity-backend
-    type: web
-    env: node
-    buildCommand: "npm install --production"
-    startCommand: "node src/server.js"
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-      - key: DATABASE_URL
-        fromService:
-          name: Giftunity-db
-          property: connectionString
       - key: JWT_SECRET
         sync: false
       - key: API_KEY
         sync: false
-      - key: FRONTEND_URL
-        fromService:
-          name: Giftunity-frontend
-          property: host
-      - key: LOG_LEVEL
-        value: info
-    region: frankfurt
-    plan: free
-    healthCheckPath: /health
-    healthCheckTimeout: 30s
-
-  # Frontend Web Application with Build Optimization
-  - name: Giftunity-frontend
-    type: static
-    buildCommand: "npm ci --only=production && npm run build"
-    staticPublishPath: "build"
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: REACT_APP_BACKEND_URL
-        fromService:
-          name: Giftunity-backend
-          property: host
       - key: REACT_APP_BOT_USERNAME
         sync: false
-      - key: GENERATE_SOURCEMAP
-        value: "false"
-    region: frankfurt
-    plan: free
 
-# Database Service with Performance Optimization
+# Database Service Definition
 databases:
   - name: Giftunity-db
     region: frankfurt
     plan: free
-    databaseName: giftunity
-    user: giftunity_user
-    maxConnections: 20
     postgresMajorVersion: 15
-    # Free tier optimization - no additional cost
-    # Automatic backups enabled by default
-    # Connection pooling optimized for microservices
+    ipAllowList: [] # Required for free instances
+
+# Web and Static Service Definitions
+services:
+  # Backend API Service
+  - name: Giftunity-backend
+    type: web
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: "npm install --production"
+    startCommand: "node src/server.js"
+    healthCheckPath: /health
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: Giftunity-db
+          property: connectionString
+      - key: FRONTEND_URL
+        fromService:
+          name: Giftunity-frontend
+          property: url
+
+  # Telegram Bot Service
+  - name: Giftunity-bot
+    type: web
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: "npm install --production"
+    startCommand: "node src/bot.js"
+    healthCheckPath: /health
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: url
+      - key: WEBHOOK_URL
+        fromService:
+          name: Giftunity-bot
+          property: url
+
+  # Frontend Web Application
+  - name: Giftunity-frontend
+    type: static
+    region: frankfurt
+    plan: free
+    buildCommand: "echo \"No build required for placeholder.\""
+    staticPublishPath: "build"
+    envVarGroups:
+      - giftunity-secrets
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        fromService:
+          name: Giftunity-backend
+          property: url
