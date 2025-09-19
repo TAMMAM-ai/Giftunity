@@ -308,17 +308,24 @@ if (process.env.NODE_ENV === 'production') {
   // Ensure the webhook URL has the proper protocol and domain
   let baseURL = process.env.WEBHOOK_URL;
   
+  console.log(`🔧 Initial webhook URL from env: ${baseURL}`);
+  
   // Fix common webhook URL issues
-  if (!baseURL.startsWith('http')) {
-    baseURL = `https://${baseURL}`;
+  if (!baseURL || !baseURL.startsWith('http')) {
+    // Fallback to using the service name if WEBHOOK_URL is not properly set
+    const serviceName = process.env.RENDER_SERVICE_NAME || 'giftunity-bot-zh1r';
+    baseURL = `https://${serviceName}`;
+    console.log(`🔄 Using fallback service name: ${baseURL}`);
   }
   
   // Ensure the URL has the proper .onrender.com domain
   if (!baseURL.includes('.onrender.com')) {
     baseURL = `${baseURL}.onrender.com`;
+    console.log(`🔧 Added .onrender.com domain: ${baseURL}`);
   }
   
   const webhookURL = `${baseURL}/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+  console.log(`🔗 Final webhook URL: ${webhookURL}`);
   
   // Configure webhook
   bot.telegram.setWebhook(webhookURL).then(() => {

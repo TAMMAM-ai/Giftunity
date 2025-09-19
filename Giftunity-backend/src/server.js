@@ -28,8 +28,15 @@ const db = require('./config/db');
 const initializeDatabase = async () => {
   try {
     console.log('🔧 Initializing database...');
+    console.log(`🔗 Database URL configured: ${process.env.DATABASE_URL ? 'Yes' : 'No'}`);
+    
+    // Test database connection first
+    console.log('🔍 Testing database connection...');
+    await db.query('SELECT NOW()');
+    console.log('✅ Database connection successful');
     
     // Check if users table exists
+    console.log('🔍 Checking if users table exists...');
     const tableCheck = await db.query(`
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
@@ -38,12 +45,17 @@ const initializeDatabase = async () => {
       );
     `);
     
+    console.log(`📊 Table check result: ${tableCheck.rows[0].exists}`);
+    
     if (!tableCheck.rows[0].exists) {
       console.log('📋 Creating users table...');
       
       // Read and execute the migration
       const migrationPath = path.join(__dirname, '..', '..', '..', 'Giftunity-db', 'migrations', '0001_create_users_table.sql');
+      console.log(`📁 Migration file path: ${migrationPath}`);
+      
       const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+      console.log(`📄 Migration SQL length: ${migrationSQL.length} characters`);
       
       await db.query(migrationSQL);
       console.log('✅ Users table created successfully');
@@ -54,6 +66,11 @@ const initializeDatabase = async () => {
     console.log('🎉 Database initialization completed');
   } catch (error) {
     console.error('❌ Database initialization failed:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
     // Don't exit the process, let the server start and handle errors gracefully
   }
 };
@@ -201,9 +218,18 @@ app.post('/api/user/findOrCreate', async (req, res) => {
     }
   } catch (error) {
     console.error('Error in /api/user/findOrCreate:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      constraint: error.constraint,
+      table: error.table,
+      column: error.column
+    });
+    
     res.status(500).json({
       error: 'Internal server error',
-      message: 'Failed to process user data'
+      message: 'Failed to process user data',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
