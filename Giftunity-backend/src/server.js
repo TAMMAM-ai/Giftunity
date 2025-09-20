@@ -466,7 +466,8 @@ app.get('/api/translations/:lang', (req, res) => {
     }
 
     // Read translation file
-    const filePath = path.join(__dirname, '..', '..', 'locales', `${lang}.json`);
+    const filePath = path.join(__dirname, '..', '..', '..', 'locales', `${lang}.json`);
+    console.log(`🔍 Looking for translation file at: ${filePath}`);
     
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
