@@ -106,13 +106,84 @@ app.use((req, res, next) => {
  * Health Check Endpoint
  * Required by Render for service monitoring
  */
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    service: 'giftunity-backend',
-    version: '1.0.0'
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Test database connection
+    const dbTest = await db.query('SELECT NOW() as current_time');
+    
+    res.status(200).json({ 
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'giftunity-backend',
+      version: '1.0.0',
+      database: {
+        connected: true,
+        current_time: dbTest.rows[0].current_time
+      }
+    });
+  } catch (error) {
+    console.error('Health check database error:', error);
+    res.status(503).json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      service: 'giftunity-backend',
+      version: '1.0.0',
+      database: {
+        connected: false,
+        error: error.message
+      }
+    });
+  }
+});
+
+/**
+ * Database Status Endpoint
+ * 
+ * GET /api/db/status
+ * 
+ * This endpoint provides detailed database status information.
+ */
+app.get('/api/db/status', async (req, res) => {
+  try {
+    // Test basic connection
+    const connectionTest = await db.query('SELECT NOW() as current_time');
+    
+    // Check if users table exists
+    const tableCheck = await db.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'users'
+      );
+    `);
+    
+    // Get table structure if it exists
+    let tableStructure = null;
+    if (tableCheck.rows[0].exists) {
+      const structureQuery = await db.query(`
+        SELECT column_name, data_type, is_nullable, column_default
+        FROM information_schema.columns 
+        WHERE table_name = 'users' 
+        ORDER BY ordinal_position;
+      `);
+      tableStructure = structureQuery.rows;
+    }
+    
+    res.json({
+      status: 'connected',
+      current_time: connectionTest.rows[0].current_time,
+      users_table_exists: tableCheck.rows[0].exists,
+      table_structure: tableStructure,
+      database_url_configured: !!process.env.DATABASE_URL
+    });
+  } catch (error) {
+    console.error('Database status check error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: error.message,
+      database_url_configured: !!process.env.DATABASE_URL
+    });
+  }
 });
 
 /**
@@ -223,8 +294,28 @@ app.post('/api/user/findOrCreate', async (req, res) => {
       code: error.code,
       constraint: error.constraint,
       table: error.table,
-      column: error.column
+      column: error.column,
+      detail: error.detail,
+      hint: error.hint
     });
+    
+    // Check if it's a database connection error
+    if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+      return res.status(503).json({
+        error: 'Database connection failed',
+        message: 'Unable to connect to the database',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+    
+    // Check if it's a table doesn't exist error
+    if (error.code === '42P01') {
+      return res.status(503).json({
+        error: 'Database table not found',
+        message: 'The users table does not exist. Please check database initialization.',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
     
     res.status(500).json({
       error: 'Internal server error',
