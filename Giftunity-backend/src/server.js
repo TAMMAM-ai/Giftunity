@@ -50,15 +50,43 @@ const initializeDatabase = async () => {
     if (!tableCheck.rows[0].exists) {
       console.log('📋 Creating users table...');
       
-      // Read and execute the migration
-      const migrationPath = path.join(__dirname, '..', '..', '..', 'Giftunity-db', 'migrations', '0001_create_users_table.sql');
-      console.log(`📁 Migration file path: ${migrationPath}`);
+      // Create table directly with SQL (more reliable than reading from file)
+      const createTableSQL = `
+        CREATE TABLE users (
+          id BIGINT PRIMARY KEY,
+          username VARCHAR(255),
+          first_name VARCHAR(255) NOT NULL,
+          last_name VARCHAR(255),
+          language_code VARCHAR(10) DEFAULT 'en',
+          is_premium BOOLEAN DEFAULT FALSE,
+          is_bot BOOLEAN DEFAULT FALSE,
+          added_to_attachment_menu BOOLEAN DEFAULT FALSE,
+          can_join_groups BOOLEAN DEFAULT TRUE,
+          can_read_all_group_messages BOOLEAN DEFAULT FALSE,
+          supports_inline_queries BOOLEAN DEFAULT FALSE,
+          preferred_language VARCHAR(10) DEFAULT 'en',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `;
       
-      const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
-      console.log(`📄 Migration SQL length: ${migrationSQL.length} characters`);
-      
-      await db.query(migrationSQL);
+      console.log('📄 Executing CREATE TABLE statement...');
+      await db.query(createTableSQL);
       console.log('✅ Users table created successfully');
+      
+      // Verify table was created
+      const verifyTable = await db.query(`
+        SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_schema = 'public' 
+          AND table_name = 'users'
+        );
+      `);
+      console.log('✅ Table creation verified:', verifyTable.rows[0].exists);
+      
+      if (!verifyTable.rows[0].exists) {
+        throw new Error('Failed to create users table - verification failed');
+      }
     } else {
       console.log('✅ Users table already exists');
     }
@@ -182,6 +210,87 @@ app.get('/api/db/status', async (req, res) => {
       status: 'error',
       error: error.message,
       database_url_configured: !!process.env.DATABASE_URL
+    });
+  }
+});
+
+/**
+ * Database Table Creation Endpoint
+ * 
+ * POST /api/db/create-table
+ * 
+ * This endpoint manually creates the users table if it doesn't exist.
+ * Useful for troubleshooting table creation issues.
+ */
+app.post('/api/db/create-table', async (req, res) => {
+  try {
+    console.log('🔧 Manual table creation requested...');
+    
+    // Check if table already exists
+    const tableCheck = await db.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'users'
+      );
+    `);
+    
+    if (tableCheck.rows[0].exists) {
+      return res.json({
+        status: 'success',
+        message: 'Users table already exists',
+        table_exists: true
+      });
+    }
+    
+    // Create table
+    const createTableSQL = `
+      CREATE TABLE users (
+        id BIGINT PRIMARY KEY,
+        username VARCHAR(255),
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255),
+        language_code VARCHAR(10) DEFAULT 'en',
+        is_premium BOOLEAN DEFAULT FALSE,
+        is_bot BOOLEAN DEFAULT FALSE,
+        added_to_attachment_menu BOOLEAN DEFAULT FALSE,
+        can_join_groups BOOLEAN DEFAULT TRUE,
+        can_read_all_group_messages BOOLEAN DEFAULT FALSE,
+        supports_inline_queries BOOLEAN DEFAULT FALSE,
+        preferred_language VARCHAR(10) DEFAULT 'en',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+    
+    console.log('📄 Creating users table...');
+    await db.query(createTableSQL);
+    console.log('✅ Users table created successfully');
+    
+    // Verify table was created
+    const verifyTable = await db.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'users'
+      );
+    `);
+    
+    if (verifyTable.rows[0].exists) {
+      res.json({
+        status: 'success',
+        message: 'Users table created successfully',
+        table_exists: true
+      });
+    } else {
+      throw new Error('Table creation verification failed');
+    }
+  } catch (error) {
+    console.error('Manual table creation error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to create users table',
+      error: error.message
     });
   }
 });
