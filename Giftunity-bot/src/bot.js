@@ -350,17 +350,22 @@ if (process.env.NODE_ENV === 'production') {
 /**
  * Graceful Shutdown Handlers
  */
-process.once('SIGINT', () => {
-  console.log('SIGINT received, stopping bot...');
-  bot.stop('SIGINT');
-  process.exit(0);
-});
+const safeStop = (signal) => {
+  try {
+    console.log(`${signal} received, stopping bot...`);
+    // In webhook mode Telegraf isn't launched via launch(); stop() can throw.
+    if (typeof bot.stop === 'function') {
+      try { bot.stop(signal); } catch (e) {
+        console.warn(`bot.stop() skipped: ${e && e.message ? e.message : e}`);
+      }
+    }
+  } finally {
+    process.exit(0);
+  }
+};
 
-process.once('SIGTERM', () => {
-  console.log('SIGTERM received, stopping bot...');
-  bot.stop('SIGTERM');
-  process.exit(0);
-});
+process.once('SIGINT', () => safeStop('SIGINT'));
+process.once('SIGTERM', () => safeStop('SIGTERM'));
 
 /**
  * Start Express Server

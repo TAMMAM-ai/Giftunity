@@ -465,10 +465,15 @@ app.get('/api/translations/:lang', (req, res) => {
       });
     }
 
-    // Read translation file
-    const filePath = path.join(__dirname, '..', '..', '..', 'locales', `${lang}.json`);
-    console.log(`🔍 Looking for translation file at: ${filePath}`);
-    
+    // Resolve translation file path (prefer backend-locales, fallback to repo root)
+    const backendLocalesPath = path.join(__dirname, '..', '..', 'locales', `${lang}.json`);
+    const rootLocalesPath = path.join(__dirname, '..', '..', '..', 'locales', `${lang}.json`);
+    const candidatePaths = [backendLocalesPath, rootLocalesPath];
+    const filePath = candidatePaths.find((p) => {
+      try { return fs.existsSync(p); } catch { return false; }
+    }) || backendLocalesPath;
+    console.log(`🔍 Looking for translation file. Candidates: ${candidatePaths.join(', ')} | Chosen: ${filePath}`);
+
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         console.error(`Error reading translation file for ${lang}:`, err);
